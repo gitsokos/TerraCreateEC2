@@ -41,3 +41,20 @@ node default {
 
 }
 
+#######################################################################################################
+  $cname = $trusted[certname]
+  $node_def_header = join(['node \'', $cname,"\' {\n"],'')
+
+  $pack1 = "  package { 'tree':"
+  $pack2 = "    ensure => present"
+  $pack3 = "  }"
+
+  $package_tree = join([$pack1,$pack2,$pack3,"\n"],"\n")
+
+  $cont = join([$node_def_header,$package_tree,"}\n"],"\n")
+
+  file { '/etc/puppetlabs/code/environments/production/manifests/site.d/master.pp':
+    ensure => present,
+    content => "${cont}",
+  }
+
