@@ -63,12 +63,27 @@ echo "set runinterval=$runinterval" >> $PROGRESS
 echo "installing tree" >> $PROGRESS
 puppet apply -e 'package { 'tree': ensure => present, provider => apt }'
 
-echo "installing pdk" >> $PROGRESS
 cd /tmp
+
+echo "preparing pdk" >> $PROGRESS
 wget https://apt.puppet.com/puppet-tools-release-focal.deb
 sudo dpkg -i puppet-tools-release-focal.deb
+
+echo "preparing  .NET" >> $PROGRESS
+wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+
 sudo apt-get update
-sudo apt-get install pdk
+
+echo "installing pdk" >> $PROGRESS
+sudo apt-get install -y pdk
+
+echo "installing .NET" >> $PROGRESS
+sudo apt-get install -y dotnet-sdk-7.0
+
+echo "installing GCM" >> $PROGRESS
+sudo dotnet tool install -g git-credential-manager
+export PATH=$PATH:/root/.dotnet/tools
 
 echo "installation complete" >> $PROGRESS
 
