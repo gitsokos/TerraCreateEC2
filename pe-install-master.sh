@@ -59,5 +59,16 @@ puppet config --section agent set runinterval $runinterval
 
 echo "set runinterval=$runinterval" >> $PROGRESS
 
+
+echo "installing tree" >> $PROGRESS
+puppet apply -e 'package { 'tree': ensure => present, provider => apt }'
+
+echo "installing pdk" >> $PROGRESS
+cd /tmp
+wget https://apt.puppet.com/puppet-tools-release-focal.deb
+sudo dpkg -i puppet-tools-release-focal.deb
+sudo apt-get update
+sudo apt-get install pdk
+
 echo "installation complete" >> $PROGRESS
 
