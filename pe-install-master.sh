@@ -83,7 +83,10 @@ sudo apt-get install -y dotnet-sdk-7.0
 
 echo "installing GCM" >> $PROGRESS
 sudo dotnet tool install -g git-credential-manager
-export PATH=$PATH:/root/.dotnet/tools
+sudo echo "PATH=$PATH:/root/.dotnet/tools" >> /etc/profile
 
 echo "installation complete" >> $PROGRESS
 
+
+# /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
+# /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/root/.dotnet/tools
