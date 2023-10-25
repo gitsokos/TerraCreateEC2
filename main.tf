@@ -261,7 +261,7 @@ output "node2_ssh_cmd" {
 }
 
 output "master_ssh_cmd" {
-  value = ["\nssh master:    ssh -i \"~/.ssh/ec2id_rsa\" ubuntu@${aws_instance.master.public_dns}     "]
+  value = ["\nssh master:     ssh -o \"StrictHostKeyChecking no\" -i \"~/.ssh/ec2id_rsa\" ubuntu@${aws_instance.master.public_dns}     "]
 }
 
 output "ssh_cmd" {
@@ -269,5 +269,5 @@ output "ssh_cmd" {
 }
 
 output "nodes_ssh_cmd" {
-  value = [for node in aws_instance.nodes: "\nssh ${node.tags.Name}:     ssh -i \"~/.ssh/ec2id_rsa\" ubuntu@${node.public_dns}     "]
+  value = [for node in aws_instance.nodes: "\nssh ${node.tags.Name}:     ssh -o \"StrictHostKeyChecking no\" -i \"~/.ssh/ec2id_rsa\" ubuntu@${node.public_dns}     "]
 }

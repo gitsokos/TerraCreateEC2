@@ -83,7 +83,17 @@ sudo apt-get install -y dotnet-sdk-7.0
 
 echo "installing GCM" >> $PROGRESS
 sudo dotnet tool install -g git-credential-manager
-sudo echo "PATH=$PATH:/root/.dotnet/tools" >> /etc/profile
+sudo echo "PATH=\$PATH:/root/.dotnet/tools" >> /etc/bash.bashrc
+
+
+echo "installing gitsome" >> $PROGRESS
+sudo apt-get install -y gitsome
+
+sudo echo "git config credential.helper store" > /usr/bin/gitcred
+chmod 0777 /usr/bin/gitcred
+
+echo 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 > /tmp/tok
+sudo chmod 0600 /tmp/tok
 
 echo "installation complete" >> $PROGRESS
 
