@@ -3,7 +3,7 @@
 echo '#!/bin/bash' > /tmp/keepalive
 echo 'while :; do echo -n -e "///////\v"; sleep 5; done' >> /tmp/keepalive
 chmod 0777 /tmp/keepalive
-cp /tmp/keeepalive /usr/bin
+sudo cp /tmp/keepalive /usr/bin
 
 
 echo ${master_private_dns} >> /tmp/install-master
@@ -13,8 +13,9 @@ URL=https://${master_private_dns}:8140/packages/current/install.bash
 
 PE_INSTALL_SCRIPT_LOG=/tmp/install-script.log
 
+echo ${node_os} >> $PE_INSTALL_SCRIPT_LOG
 
-echo "Testing $URL connection" > $PE_INSTALL_SCRIPT_LOG
+echo "Testing $URL connection" >> $PE_INSTALL_SCRIPT_LOG
 
 while :
 do
@@ -41,7 +42,7 @@ do
   sleep 1m
 done
 
-echo "Installing ..."
+
 echo "Installing ..." >> $PE_INSTALL_SCRIPT_LOG
 
 curl -k --no-progress-meter $URL 2>/tmp/install-error.log | sudo bash  # > /tmp/install.log
@@ -68,7 +69,7 @@ sudo puppet agent -t --waitforlock 60 --waitforcert 60 --logdest /tmp/puppet-age
 
 echo "puppet agent -t ok" >> $PE_INSTALL_SCRIPT_LOG
 
-runinterval=25s
+runinterval=60s
 puppet config --section agent set runinterval $runinterval
 
 echo "set runinterval=$runinterval" >> $PE_INSTALL_SCRIPT_LOG

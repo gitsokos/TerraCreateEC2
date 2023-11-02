@@ -15,9 +15,13 @@ variable "master_name" {
   default	= "master"	
 }
 
-variable "node_name" {
+variable "u_node_name" {
   type		= string
-  default	= "node"	
+  default	= "ubuntu"	
+}
+variable "r_node_name" {
+  type		= string
+  default	= "redhat"	
 }
 
 variable "w_node_name" {
@@ -25,7 +29,12 @@ variable "w_node_name" {
   default	= "wnode"	
 }
 
-variable "nodes" {
+variable "u_nodes" {
+  type		= number
+  default	= 0
+}
+
+variable "r_nodes" {
   type		= number
   default	= 0
 }
@@ -47,9 +56,14 @@ variable "master_type" {
 #  default	= "t2.2xlarge"
 }
 
-variable "node_ami" {
+variable "u_node_ami" {
   type    = string
   default = "ami-0c6ebbd55ab05f070"
+}
+
+variable "r_node_ami" {
+  type    = string
+  default = "ami-0d767e966f3458eb5"
 }
 
 variable "node_type" {
@@ -87,7 +101,11 @@ variable "user_data_replace_on_change_master" {
   default = false
 }
 
-variable "user_data_replace_on_change_node" {
+variable "user_data_replace_on_change_u_node" {
+  type = bool
+  default = false
+}
+variable "user_data_replace_on_change_r_node" {
   type = bool
   default = false
 }
@@ -118,12 +136,12 @@ resource "aws_instance" "master" {
   user_data_replace_on_change = var.user_data_replace_on_change_master # true 
 }
 
-resource "aws_instance" "nodes" {
-  ami           = var.node_ami # "ami-0c6ebbd55ab05f070"
+resource "aws_instance" "u_nodes" {
+  ami           = var.u_node_ami # "ami-0c6ebbd55ab05f070"
   instance_type = var.node_type
-  count         = var.nodes
+  count         = var.u_nodes
   tags = {
-    Name = "${var.node_name}${count.index}"
+    Name = "${var.u_node_name}${count.index}"
   }
 
   key_name = var.keyname
@@ -134,8 +152,8 @@ resource "aws_instance" "nodes" {
 #    inline = ["echo \"The server's IP address is ${self.private_ip}\" > /tmp/message"]
 #  }
 
-  user_data = templatefile("pe-install-node.sh",{master_private_dns=aws_instance.master.private_dns })
-  user_data_replace_on_change = var.user_data_replace_on_change_node # true 
+  user_data = templatefile("pe-install-node.sh",{master_private_dns=aws_instance.master.private_dns,node_os=var.u_node_name })
+  user_data_replace_on_change = var.user_data_replace_on_change_u_node # true 
 
   depends_on = [
     aws_instance.master
@@ -150,6 +168,27 @@ resource "aws_instance" "nodes" {
 #   source      = "/home/grtso/.ssh/ec2id_rsa"
 #   destination = "/root/.ssh/ec2id_rsa"
 # }
+}
+
+resource "aws_instance" "r_nodes" {
+  ami           = var.r_node_ami
+  instance_type = var.node_type
+  count         = var.r_nodes
+  tags = {
+    Name = "${var.r_node_name}${count.index}"
+  }
+
+  key_name = var.keyname
+
+  vpc_security_group_ids = [aws_security_group.main.id]
+
+  user_data = templatefile("pe-install-node.sh",{master_private_dns=aws_instance.master.private_dns,node_os=var.r_node_name })
+  user_data_replace_on_change = var.user_data_replace_on_change_r_node # true 
+
+  depends_on = [
+    aws_instance.master
+  ]
+
 }
 
 resource "aws_instance" "w_nodes" {
@@ -268,6 +307,10 @@ output "ssh_cmd" {
   value = null # "ssh -i \"~/.ssh/ec2id_rsa\" ubuntu@"
 }
 
-output "nodes_ssh_cmd" {
-  value = [for node in aws_instance.nodes: "\nssh ${node.tags.Name}:     ssh -o \"StrictHostKeyChecking no\" -i \"~/.ssh/ec2id_rsa\" ubuntu@${node.public_dns}     "]
+output "u_nodes_ssh_cmd" {
+  value = [for node in aws_instance.u_nodes: "\nssh ${node.tags.Name}:     ssh -o \"StrictHostKeyChecking no\" -i \"~/.ssh/ec2id_rsa\" ubuntu@${node.public_dns}     "]
+}
+
+output "r_nodes_ssh_cmd" {
+  value = [for node in aws_instance.r_nodes: "\nssh ${node.tags.Name}:     ssh -o \"StrictHostKeyChecking no\" -i \"~/.ssh/ec2id_rsa\" ec2-user@${node.public_dns}     "]
 }

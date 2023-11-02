@@ -1,0 +1,38 @@
+INSTALL AGENT FROM THE SERVER
+
+PATH: /opt/puppetlabs/server/data/packages/public/2023.4.0
+INITIAL CONTENT (ubuntu server):
+total 100
+drwxr-xr-x 5 root root  4096 Oct 27 07:59 ./
+drwxr-xr-x 3 root root  4096 Oct 27 07:54 ../
+-rw-r--r-- 1 root root 26326 Oct 27 07:54 install.bash
+-rw-r--r-- 1 root root 14447 Oct 27 07:54 install.ps1
+lrwxrwxrwx 1 root root    77 Oct 27 07:50 puppet_enterprise -> /opt/puppetlabs/server/data/packages/public/2023.4.0/ubuntu-20.04-amd64-8.2.0/
+lrwxrwxrwx 1 root root    77 Oct 27 07:54 ubuntu-20.04-amd64 -> /opt/puppetlabs/server/data/packages/public/2023.4.0/ubuntu-20.04-amd64-8.2.0/
+drwxr-xr-x 6 root root  4096 Oct 27 07:55 ubuntu-20.04-amd64-8.2.0/
+-rw-r--r-- 1 root root 18404 Oct 27 07:54 ubuntu-20.04-amd64.bash
+lrwxrwxrwx 1 root root    73 Oct 27 07:54 windows-x86_64 -> /opt/puppetlabs/server/data/packages/public/2023.4.0/windows-x86_64-8.2.0/
+drwxr-xr-x 2 root root  4096 Oct 27 07:51 windows-x86_64-8.2.0/
+lrwxrwxrwx 1 root root    77 Oct 27 07:59 windowsfips-x86_64 -> /opt/puppetlabs/server/data/packages/public/2023.4.0/windowsfips-x86_64-8.2.0/
+drwxr-xr-x 2 root root  4096 Oct 27 07:51 windowsfips-x86_64-8.2.0/
+
+
+console: Node groups -> All Nodes -> PE Infrastructure -> PE Master -> [Classes]:
+pe_repo
+pe_repo::platform::ubuntu_2004_amd64
+pe_repo::platform::windowsfips_x86_64
+pe_repo::platform::windows_x86_64
+puppet_enterprise::profile::master
+
+CONTENT AFTER ADDING:  pe_repo::platform::el_9_x86_64
+~ total 132
+....
++ lrwxrwxrwx 1 root root    70 Oct 27 08:42 el-9-x86_64 -> /opt/puppetlabs/server/data/packages/public/2023.4.0/el-9-x86_64-8.2.0/
++ drwxr-xr-x 3 root root  4096 Oct 27 08:42 el-9-x86_64-8.2.0/
++ -rw-r--r-- 1 root root 18278 Oct 27 08:42 el-9-x86_64.bash
++ -rw-r--r-- 1 root root   397 Oct 27 08:42 el-9-x86_64.repo
+
+CONCLUSION?
+  At the console, Node groups -> ... -> [Classes] add pe_repo::platform::el_9_x86_64 before installing RedHat agent on ubuntu server.
+  restart puppet
+

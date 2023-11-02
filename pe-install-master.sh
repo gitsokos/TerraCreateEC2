@@ -3,7 +3,7 @@
 echo '#!/bin/bash' > /tmp/keepalive
 echo 'while :; do echo -n -e "///////\v"; sleep 5; done' >> /tmp/keepalive
 chmod 0777 /tmp/keepalive
-cp /tmp/keepalive /usr/bin
+sudo cp /tmp/keepalive /usr/bin
 
 PROGRESS=/tmp/pe-installation.progress
 
@@ -54,7 +54,7 @@ puppet agent -t --logdest /tmp/agent-log2
 echo "agent phase 2 ok($?)" >> $PROGRESS
 
 
-runinterval=25s
+runinterval=60s
 puppet config --section agent set runinterval $runinterval
 
 echo "set runinterval=$runinterval" >> $PROGRESS
@@ -92,8 +92,16 @@ sudo apt-get install -y gitsome
 sudo echo "git config credential.helper store" > /usr/bin/gitcred
 chmod 0777 /usr/bin/gitcred
 
-echo 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 > /tmp/tok
-sudo chmod 0600 /tmp/tok
+cd /etc/puppetlabs/code/environments # /environments/production/modules
+sudo rm -r /etc/puppetlabs/code/environments/*
+echo "rm environments/* ok=($?)" >> $PROGRESS
+
+git clone https://github.com/gitsokos/PE-master-env . # PE-master-apache.git apache
+echo "clone git ok=($?)" >> $PROGRESS
+
+sudo chown -R pe-puppet:pe-puppet *
+#cd apache
+git config credential.helper store
 
 echo "installation complete" >> $PROGRESS
 
@@ -101,4 +109,4 @@ echo "installation complete" >> $PROGRESS
 # /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/puppetlabs/bin
 # /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/root/.dotnet/tools
 
-####
+##

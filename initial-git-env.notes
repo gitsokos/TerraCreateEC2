@@ -1,0 +1,10 @@
+@code/environments
+touch .noemtydir @ empty dirs
+git init
+git add environments
+git commit -m "Initial bla bla"
+git branch -M main
+git remote add origin https://github.com/........"
+git push -u origin main
+
+
