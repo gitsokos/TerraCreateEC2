@@ -3,3 +3,4 @@ terraform.tfstate*
 .test
 .bak
 *.bad
+.bak1
