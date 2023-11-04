@@ -12,24 +12,21 @@ mkdir puppet
 cd puppet
 
 echo curl >> $PROGRESS
-
 curl -JLO "https://pm.puppet.com/cgi-bin/download.cgi?dist=ubuntu&rel=20.04&arch=amd64&ver=latest"
+echo "curl ok($?)" >> $PROGRESS
 
 echo tar >> $PROGRESS
-
 tar -xf *.tar.gz
+echo "tar ok($?)" >> $PROGRESS
 rm *.tar.gz
 
 cd pupp*
 
 echo "Installer starting ..." >> $PROGRESS
-
 ./puppet-enterprise-installer -y -c conf.d/pe.conf
 echo "Install ok($?)" >> $PROGRESS
 
-
 puppet infrastructure console_password --password adminp@ss
-
 echo "admin pass ok($?)" >> $PROGRESS
 
 sudo echo "#!/bin/bash" > /etc/puppetlabs/puppet/autosign.conf
@@ -40,23 +37,18 @@ sudo echo "exit 0" >> /etc/puppetlabs/puppet/autosign.conf
 sudo chmod 0777 /etc/puppetlabs/puppet/autosign.conf
 
 echo Autosign >> $PROGRESS
-
 puppet config --section master set autosign /etc/puppetlabs/puppet/autosign.conf
 
 echo Puppet-conf >> $PROGRESS
 
 puppet agent -t --logdest /tmp/agent-log1
-
 echo "agent phase 1 ok($?)" >> $PROGRESS
 
 puppet agent -t --logdest /tmp/agent-log2
-
 echo "agent phase 2 ok($?)" >> $PROGRESS
-
 
 runinterval=60s
 puppet config --section agent set runinterval $runinterval
-
 echo "set runinterval=$runinterval" >> $PROGRESS
 
 
@@ -85,22 +77,21 @@ echo "installing GCM" >> $PROGRESS
 sudo dotnet tool install -g git-credential-manager
 sudo echo "PATH=\$PATH:/root/.dotnet/tools" >> /etc/bash.bashrc
 
-
 echo "installing gitsome" >> $PROGRESS
 sudo apt-get install -y gitsome
 
 sudo echo "git config credential.helper store" > /usr/bin/gitcred
 chmod 0777 /usr/bin/gitcred
 
-cd /etc/puppetlabs/code/environments # /environments/production/modules
+cd /etc/puppetlabs/code/environments
 sudo rm -r /etc/puppetlabs/code/environments/*
 echo "rm environments/* ok=($?)" >> $PROGRESS
 
-git clone https://github.com/gitsokos/PE-master-env . # PE-master-apache.git apache
+git clone https://github.com/gitsokos/PE-master-env .
 echo "clone git ok=($?)" >> $PROGRESS
 
 sudo chown -R pe-puppet:pe-puppet *
-#cd apache
+
 git config credential.helper store
 
 echo "installation complete" >> $PROGRESS
