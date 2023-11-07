@@ -127,6 +127,8 @@ resource "aws_instance" "master" {
 
   vpc_security_group_ids = [aws_security_group.main.id]
 
+  private_ip = "172.31.40.1"
+
   provisioner "local-exec" {
     command = "echo \"The server's IP address is ${self.private_ip}\""
   }
@@ -143,6 +145,8 @@ resource "aws_instance" "u_nodes" {
   tags = {
     Name = "${var.u_node_name}${count.index}"
   }
+
+  private_ip = "172.31.15.${count.index+1}"
 
   key_name = var.keyname
 
