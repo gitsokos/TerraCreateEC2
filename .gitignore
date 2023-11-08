@@ -1,6 +1,5 @@
 .terraform*
 terraform.tfstate*
-terraform.tfvars
 .test
 .bak
 *.bad
