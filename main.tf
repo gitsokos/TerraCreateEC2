@@ -127,7 +127,8 @@ resource "aws_instance" "master" {
 
   vpc_security_group_ids = [aws_security_group.main.id]
 
-  private_ip = "172.31.40.1"
+  availability_zone = "eu-west-3a"
+  private_ip ="172.31.13.0"
 
   provisioner "local-exec" {
     command = "echo \"The server's IP address is ${self.private_ip}\""
@@ -143,10 +144,11 @@ resource "aws_instance" "u_nodes" {
   instance_type = var.node_type
   count         = var.u_nodes
   tags = {
-    Name = "${var.u_node_name}${count.index}"
+    Name = "${var.u_node_name}-${count.index+1}"
   }
 
-  private_ip = "172.31.15.${count.index+1}"
+  availability_zone = "eu-west-3a"
+  private_ip = "172.31.13.10${count.index+1}"
 
   key_name = var.keyname
 
@@ -179,12 +181,16 @@ resource "aws_instance" "r_nodes" {
   instance_type = var.node_type
   count         = var.r_nodes
   tags = {
-    Name = "${var.r_node_name}${count.index}"
+    Name = "${var.r_node_name}-${count.index+1}"
   }
 
   key_name = var.keyname
 
   vpc_security_group_ids = [aws_security_group.main.id]
+
+
+  availability_zone = "eu-west-3a"
+  private_ip = "172.31.13.15${count.index+1}"
 
   user_data = templatefile("pe-install-node.sh",{master_private_dns=aws_instance.master.private_dns,node_os=var.r_node_name })
   user_data_replace_on_change = var.user_data_replace_on_change_r_node # true 
@@ -201,7 +207,7 @@ resource "aws_instance" "w_nodes" {
   instance_type = var.w_node_type
   count         = var.w_nodes
   tags = {
-    Name = "${var.w_node_name}${count.index}"
+    Name = "${var.w_node_name}-${count.index+1}"
   }
 
   associate_public_ip_address = true
