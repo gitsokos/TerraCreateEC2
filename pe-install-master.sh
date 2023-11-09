@@ -57,7 +57,7 @@ puppet apply -e 'package { 'tree': ensure => present, provider => apt }'
 
 cd /tmp
 
-echo "preparing pdk" >> $PROGRESS
+echo "preparing pdk, bolt" >> $PROGRESS
 wget https://apt.puppet.com/puppet-tools-release-focal.deb
 sudo dpkg -i puppet-tools-release-focal.deb
 
@@ -69,6 +69,12 @@ sudo apt-get update
 
 echo "installing pdk" >> $PROGRESS
 sudo apt-get install -y pdk
+
+echo "installing bolt" >> $PROGRESS
+sudo apt-get install -y puppet-bolt
+
+echo "installing hiera" >> $PROGRESS
+sudo apt-get install -y hiera
 
 echo "installing .NET" >> $PROGRESS
 sudo apt-get install -y dotnet-sdk-7.0
