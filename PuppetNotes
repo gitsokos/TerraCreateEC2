@@ -1,0 +1,1 @@
+✏️ Note: Most of the text scrolling by is from a process called pluginsync. During pluginsync, any extensions installed on the server (such as custom facts, resource types, or providers) are copied to the agent before the Puppet run. This ensures that the agent has the tools it needs to apply the catalog.
