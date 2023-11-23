@@ -61,3 +61,12 @@ echo "datacenter=<DATACENTER>"
 puppet agent -t # @server
 
 @pe-101-lab-3-0 ---------------------------------------------------------------------------------<
+
+
+@pe-201-lab-1-0 --------------------------------------------------------------------------------->
+
+puppet config print client_datadir
+/opt/puppetlabs/puppet/cache/client_data
+jq '.resources[] | select(.type=="Service")' /opt/puppetlabs/puppet/cache/client_data/catalog/*.json
+
+@pe-201-lab-1-0 ---------------------------------------------------------------------------------<
