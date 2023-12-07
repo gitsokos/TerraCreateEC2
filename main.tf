@@ -92,8 +92,8 @@ resource "aws_instance" "master" {
     command = "echo \"The server's IP address is ${self.private_ip}\""
   }
 
-  user_data = templatefile("pe-install-master.sh",{})
-  user_data_replace_on_change = var.user_data_replace_on_change_master 
+#  user_data = templatefile("pe-install-master.sh",{})
+#  user_data_replace_on_change = var.user_data_replace_on_change_master 
 }
 
 resource "aws_instance" "u_nodes" {
@@ -111,8 +111,8 @@ resource "aws_instance" "u_nodes" {
 
   vpc_security_group_ids = [aws_security_group.main.id]
 
-  user_data = templatefile("pe-install-node.sh",{master_private_dns=aws_instance.master.private_dns,node_os=var.u_node_name })
-  user_data_replace_on_change = var.user_data_replace_on_change_u_node # true 
+#  user_data = templatefile("pe-install-node.sh",{master_private_dns=aws_instance.master.private_dns,node_os=var.u_node_name })
+#  user_data_replace_on_change = var.user_data_replace_on_change_u_node # true 
 
   depends_on = [aws_instance.master]
 
@@ -142,8 +142,8 @@ resource "aws_instance" "r_nodes" {
   availability_zone = var.az
   private_ip        = "${var.r_node_ip_prefix}${count.index+1}"
 
-  user_data = templatefile("pe-install-node.sh",{master_private_dns=aws_instance.master.private_dns,node_os=var.r_node_name })
-  user_data_replace_on_change = var.user_data_replace_on_change_r_node # true 
+#  user_data = templatefile("pe-install-node.sh",{master_private_dns=aws_instance.master.private_dns,node_os=var.r_node_name })
+#  user_data_replace_on_change = var.user_data_replace_on_change_r_node # true 
 
   depends_on = [aws_instance.master]
 
@@ -171,8 +171,8 @@ resource "aws_instance" "w_nodes" {
 #  vpc_security_group_ids = ["sg-23847238474f"]
 #  subnet_id     = "subnet-2348273423"
 
-  user_data = templatefile("pe-install-wnode.ps1",{master_private_dns=aws_instance.master.private_dns })
-  user_data_replace_on_change = var.user_data_replace_on_change_w_node
+#  user_data = templatefile("pe-install-wnode.ps1",{master_private_dns=aws_instance.master.private_dns })
+#  user_data_replace_on_change = var.user_data_replace_on_change_w_node
 
   depends_on = [aws_instance.master]
 
