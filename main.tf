@@ -92,8 +92,8 @@ resource "aws_instance" "master" {
     command = "echo \"The server's IP address is ${self.private_ip}\""
   }
 
-#  user_data = templatefile("pe-install-master.sh",{})
-#  user_data_replace_on_change = var.user_data_replace_on_change_master 
+  user_data = templatefile("install-docker.sh",{})
+  user_data_replace_on_change = var.user_data_replace_on_change_master 
 }
 
 resource "aws_instance" "u_nodes" {
