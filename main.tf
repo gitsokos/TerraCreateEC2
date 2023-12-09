@@ -30,7 +30,7 @@ variable "master_ami" {
 
 variable "master_type" {
   type    = string
-  default = "t2.large" #  t2.xlarge t2.2xlarge
+  default = "t2.small"  # t2.large #  t2.xlarge t2.2xlarge
 }
 
 variable "u_node_ami" {
