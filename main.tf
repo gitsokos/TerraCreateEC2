@@ -35,7 +35,8 @@ variable "master_type" {
 
 variable "u_node_ami" {
   type    = string
-  default = "ami-0c6ebbd55ab05f070"
+#  default = "ami-0c6ebbd55ab05f070"
+  default = "ami-0c03e02984f6a0b41"
 }
 
 variable "r_node_ami" {
@@ -45,7 +46,7 @@ variable "r_node_ami" {
 
 variable "node_type" {
   type    = string
-  default = "t2.small"
+  default = "i4i.large"
 }
 
 variable "w_node_ami" {
@@ -111,8 +112,8 @@ resource "aws_instance" "u_nodes" {
 
   vpc_security_group_ids = [aws_security_group.main.id]
 
-#  user_data = templatefile("pe-install-node.sh",{master_private_dns=aws_instance.master.private_dns,node_os=var.u_node_name })
-#  user_data_replace_on_change = var.user_data_replace_on_change_u_node # true 
+  user_data = templatefile("install-docker.sh",{})
+  user_data_replace_on_change = var.user_data_replace_on_change_u_node # true 
 
   depends_on = [aws_instance.master]
 
