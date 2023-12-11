@@ -25,18 +25,20 @@ variable "w_nodes" {}
 
 variable "master_ami" {
   type    = string
-  default = "ami-0c6ebbd55ab05f070"
+  default = "ami-0c03e02984f6a0b41"
+#  default = "ami-0c6ebbd55ab05f070"
 }
 
 variable "master_type" {
   type    = string
-  default = "t2.small"  # t2.large #  t2.xlarge t2.2xlarge
+#  default = "t2.small"  # t2.large #  t2.xlarge t2.2xlarge
+  default = "i4i.large"
 }
 
 variable "u_node_ami" {
   type    = string
-#  default = "ami-0c6ebbd55ab05f070"
-  default = "ami-0c03e02984f6a0b41"
+  default = "ami-0c6ebbd55ab05f070"
+#  default = "ami-0c03e02984f6a0b41"
 }
 
 variable "r_node_ami" {
@@ -46,7 +48,8 @@ variable "r_node_ami" {
 
 variable "node_type" {
   type    = string
-  default = "i4i.large"
+  default = "t2.small"  # t2.large #  t2.xlarge t2.2xlarge
+#  default = "i4i.large"
 }
 
 variable "w_node_ami" {
