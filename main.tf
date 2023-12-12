@@ -96,7 +96,7 @@ resource "aws_instance" "master" {
     command = "echo \"The server's IP address is ${self.private_ip}\""
   }
 
-  user_data = templatefile("install-docker.sh",{})
+  user_data = templatefile("install-progs.sh",{})
   user_data_replace_on_change = var.user_data_replace_on_change_master 
 }
 
@@ -115,8 +115,8 @@ resource "aws_instance" "u_nodes" {
 
   vpc_security_group_ids = [aws_security_group.main.id]
 
-  user_data = templatefile("install-docker.sh",{})
-  user_data_replace_on_change = var.user_data_replace_on_change_u_node # true 
+#  user_data = templatefile("install-docker.sh",{})
+#  user_data_replace_on_change = var.user_data_replace_on_change_u_node # true 
 
   depends_on = [aws_instance.master]
 
