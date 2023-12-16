@@ -25,14 +25,14 @@ variable "w_nodes" {}
 
 variable "master_ami" {
   type    = string
-  default = "ami-0c03e02984f6a0b41"
-#  default = "ami-0c6ebbd55ab05f070"
+  default = "ami-0c03e02984f6a0b41"    # i4i.large
+#  default = "ami-0c6ebbd55ab05f070"    # t2.small, t2.large
 }
 
 variable "master_type" {
   type    = string
-#  default = "t2.small"  # t2.large #  t2.xlarge t2.2xlarge
   default = "i4i.large"
+#  default = "t2.small"  # t2.large #  t2.xlarge t2.2xlarge
 }
 
 variable "u_node_ami" {
@@ -49,7 +49,6 @@ variable "r_node_ami" {
 variable "node_type" {
   type    = string
   default = "t2.small"  # t2.large #  t2.xlarge t2.2xlarge
-#  default = "i4i.large"
 }
 
 variable "w_node_ami" {
@@ -77,6 +76,9 @@ variable "user_data_replace_on_change_u_node" {}
 variable "user_data_replace_on_change_r_node" {}
 variable "user_data_replace_on_change_w_node" {}
 
+
+########################################  master ##############################################
+
 resource "aws_instance" "master" {
   ami           = var.master_ami
   instance_type = var.master_type
@@ -92,13 +94,15 @@ resource "aws_instance" "master" {
   availability_zone = var.az
   private_ip        = var.master_ip # "172.31.13.0"
 
-  provisioner "local-exec" {
-    command = "echo \"The server's IP address is ${self.private_ip}\""
-  }
+#  provisioner "local-exec" {
+#    command = "echo \"The server's IP address is ${self.private_ip}\""
+#  }
 
   user_data = templatefile("install-progs.sh",{})
   user_data_replace_on_change = var.user_data_replace_on_change_master 
 }
+
+########################################  ubuntu nodes ########################################
 
 resource "aws_instance" "u_nodes" {
   ami           = var.u_node_ami
@@ -131,6 +135,8 @@ resource "aws_instance" "u_nodes" {
 # }
 }
 
+########################################  redhat nodes ########################################
+
 resource "aws_instance" "r_nodes" {
   ami           = var.r_node_ami
   instance_type = var.node_type
@@ -152,6 +158,8 @@ resource "aws_instance" "r_nodes" {
   depends_on = [aws_instance.master]
 
 }
+
+########################################  window nodes ########################################
 
 resource "aws_instance" "w_nodes" {
   
@@ -181,6 +189,8 @@ resource "aws_instance" "w_nodes" {
   depends_on = [aws_instance.master]
 
 }
+
+###############################################################################################
 
 #resource "local_file" "inventory" {
 #  filename = var.inventory
@@ -229,12 +239,12 @@ resource "aws_security_group" "main" {
 
 resource "aws_key_pair" "key_pair" {
   key_name = "${var.keyname}"  # "ec2id_rsa"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDNQRbdwoOjhTcgagF+owTymeiWsrQrpQ1and7MJIUq//kG/B24qUhRo+gbsH3Bt2sFYzO/IU9wiwfwUd2WrzX9WzpN2wSsppPHZnfpsDpp9UYI3CIvQensc2RIMias//KdjAuG+oHFnSJODo9RtDZ4MXvqgQVrIVYERUV48rTAQFUc+YmXHAXsnBeNtc3RIh1J/OC4TxO82F8cRbIrMKPgrXDylxQGFV1NdOtS+PfDRAYwPyJRbdRTqDOjInllH68cetchJbB9vxfBEzMF78E7EH6NC0b6GHNSXVxJfiyO5xJPO1TZnOupTRVYSvk2yIwjrCBen5tGY3oKYOSnEV1EVMc3WOR2DhR2IY//z6JLxQmvH9WlQyCnzTT/waYQhbGFoD5CXjYlm2eM/bcd4XJXg6SFNT2ewWKrN5huefZ+Cl1obQB+5gG+wYaKMXwD8hNROv3nWWUYV9nAX1RWtQBD9cYoudBsCPkwBbUm1sXnEe97oFtOvHD/ox3QFg/qrGs= grtso@LAPTOP-2N9STEIV"
+  public_key = file("~/.ssh/ec2id_rsa.pub")
 }
 
 resource "aws_key_pair" "w_key_pair" {
   key_name = "${var.w_keyname}"  # "ec2idw_rsa"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCzMO/pgggZx55/d8hM7ZeMCqHWdkhssH5Kept65ikeP+4YD5r2WLcbkpHFiJHTYraSOkjR7Ojl+b11w1ciooRveG1VUhHc6AyFRIrz95+vPv/rdyxfJg1XQsMbSfsipDxomXYySqRPdaBw67UM7X79z9qoWG03hob652QOQPQe1KlgUhuZ/kIgzuTV50Q2z2CtTiy6j79x7ndINZaS+xN1Oq+3h97MnFcgFxgLubAAaInj9nECeMVhBe1G9AY1Ot7ehpfX/Skra9GnkNFQfv+K7sqPZOAsAox8czVy3Wh2I6mMG6br9E+Su8Yqy6UNFtGPmrBZdZXLyGoaXfms+6e/YH+KsGjeSgLQyt/FXTdPpnYbDxGa6rhjRBeasIsN6a+5icZ4gp+bGqT4OOPn2hSua+hnRbx0AXCv/b6GEvt3likpXGP3w0Dq3vDFPgMRs1BAiil5XgJ6U89bx54+4ARAiaLfSgkFKP1KLo9xc7BBIceBIwwmmBPcrbuXOaC931c= george@DESKTOP-74M7RJ1"
+  public_key = file("~/.ssh/ec2wid_rsa.pub")
 }
 
 
