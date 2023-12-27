@@ -34,3 +34,9 @@ sudo apt-get update
 
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo apt-get install -y tree
+
+sudo apt install -y xrdp
+sudo systemctl enable xrdp
+sudo add-apt-repository -y ppa:gnome3-team/gnome3
+sudo apt-get install -y gnome-shell ubuntu-gnome-desktop
+echo ubuntu:ubuntu000 | sudo chpasswd
