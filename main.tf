@@ -94,6 +94,12 @@ resource "aws_instance" "master" {
   availability_zone = var.az
   private_ip        = var.master_ip # "172.31.13.0"
 
+  root_block_device {
+    volume_size           = "20"
+    volume_type           = "gp2"
+    delete_on_termination = true
+  }
+
 #  provisioner "local-exec" {
 #    command = "echo \"The server's IP address is ${self.private_ip}\""
 #  }
