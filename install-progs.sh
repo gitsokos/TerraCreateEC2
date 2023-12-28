@@ -40,3 +40,19 @@ sudo systemctl enable xrdp
 sudo add-apt-repository -y ppa:gnome3-team/gnome3
 sudo apt-get install -y gnome-shell ubuntu-gnome-desktop
 echo ubuntu:ubuntu000 | sudo chpasswd
+
+# Install golang
+cd /tmp
+sudo wget https://go.dev/dl/go1.21.5.linux-amd64.tar.gz
+
+sudo rm -rf /usr/bin/go
+tar -C /usr/local -xzf /tmp/go1.21.5.linux-amd64.tar.gz
+
+export PATH=$PATH:/usr/local/go/bin
+echo PATH=$PATH >> ~/.bashrc
+source ~/.bashrc
+
+# Install kind
+sudo GOPATH=/usr/local/go /usr/local/go/bin/go install sigs.k8s.io/kind@v0.20.0
+echo "Install kind: "$?
+
