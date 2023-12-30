@@ -1,5 +1,7 @@
 #!/bin/bash
-echo -n "working directory: " $0
+echo -e "----------------------------------------- Script directory ---------------------------------------------------------\n " $0
+
+sleep 20
 
 echo '#!/bin/bash' > /tmp/keepalive
 echo "trap 'echo; exit 0;' INT" >> /tmp/keepalive
@@ -49,7 +51,7 @@ echo ubuntu:ubuntu000 | sudo chpasswd
 
 echo "------------------------------------------- Install golang -------------------------------------------------------------"
 cd /tmp
-sudo wget https://go.dev/dl/go1.21.5.linux-amd64.tar.gz
+sudo wget -nv https://go.dev/dl/go1.21.5.linux-amd64.tar.gz
 
 sudo rm -rf /usr/bin/go
 tar -C /usr/local -xzf /tmp/go1.21.5.linux-amd64.tar.gz
@@ -71,7 +73,7 @@ sudo apt-get update
 sudo apt-get install -y kubectl
 
 echo "-------------------------------------------- Install terraform ---------------------------------------------------------"
-wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --yes --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+wget -O - https://apt.releases.hashicorp.com/gpg 2>/dev/null | sudo gpg --yes --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 sudo apt update || true
 sudo apt install terraform
