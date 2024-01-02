@@ -1,7 +1,5 @@
 #!/bin/bash
-echo -e "----------------------------------------- Script directory ---------------------------------------------------------\n " $0
-
-sleep 20
+echo -e "----------------------------------------- Script directory ---------------------------------------------------------\n" $0
 
 echo '#!/bin/bash' > /tmp/keepalive
 echo "trap 'echo; exit 0;' INT" >> /tmp/keepalive
@@ -22,9 +20,9 @@ echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.co
 echo "------------------------------------------- Install git ----------------------------------------------------------------"
 apt-get update
 apt-get -yqq install git
-git config --global credential.helper store
-apt-get -yqq install nodejs
+git config --system credential.helper store
 echo "------------------------------------------- Install nodejs -------------------------------------------------------------"
+apt-get -yqq install nodejs
 
 echo "------------------------------------------- Add Docker's official GPG key ----------------------------------------------"
 sudo apt-get update
@@ -78,4 +76,7 @@ echo "-------------------------------------------- Install terraform -----------
 wget -O - https://apt.releases.hashicorp.com/gpg 2>/dev/null | sudo gpg --yes --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 sudo apt update || true
-sudo apt install terraform
+sudo apt install -y terraform
+
+echo "-------------------------------------------- Install azure-cli ---------------------------------------------------------"
+sudo apt install -y azure-cli
