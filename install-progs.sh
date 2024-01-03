@@ -47,7 +47,7 @@ sudo add-apt-repository --yes ppa:gnome3-team/gnome3
 sudo apt-get -yqq install gnome-shell ubuntu-gnome-desktop
 
 echo "------------------------------------------- Set passwd for ubuntu ------------------------------------------------------"
-echo ubuntu:ubuntu000 | sudo chpasswd
+echo ubuntu:ubup@ss0 | sudo chpasswd
 
 echo "------------------------------------------- Install golang -------------------------------------------------------------"
 cd /tmp

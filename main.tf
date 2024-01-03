@@ -25,8 +25,8 @@ variable "w_nodes" {}
 
 variable "master_ami" {
   type    = string
-  default = "ami-0c03e02984f6a0b41"    # i4i.large
-#  default = "ami-0c6ebbd55ab05f070"    # t2.small, t2.large
+#  default = "ami-01d21b7be69801c2f" # ubuntu 22.04 i4i.large t2.small
+  default = "ami-0c03e02984f6a0b41" # ubuntu 20.04 i4i.large t2.small
 }
 
 variable "master_type" {
@@ -37,8 +37,8 @@ variable "master_type" {
 
 variable "u_node_ami" {
   type    = string
-  default = "ami-0c6ebbd55ab05f070"
-#  default = "ami-0c03e02984f6a0b41"
+#  default = "ami-01d21b7be69801c2f" # ubuntu 22.04 i4i.large t2.small
+  default = "ami-0c03e02984f6a0b41" # ubuntu 20.04 i4i.large t2.small
 }
 
 variable "r_node_ami" {
