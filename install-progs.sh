@@ -9,6 +9,10 @@ chmod 0777 /tmp/keepalive
 sudo cp /tmp/keepalive /usr/bin
 
 
+echo "------------------------------------------- Install net-tools ----------------------------------------------------------"
+apt-get -yqq update
+apt-get -yqq install net-tools
+
 echo "------------------------------------------- prepare git installation ---------------------------------------------------"
 add-apt-repository --yes ppa:git-core/ppa
 
