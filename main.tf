@@ -31,8 +31,8 @@ variable "master_ami" {
 
 variable "master_type" {
   type    = string
-  default = "i4i.large"
-#  default = "t2.small"  # t2.large #  t2.xlarge t2.2xlarge
+#  default = "i4i.large"
+  default = "t2.medium"  # t2.large #  t2.xlarge t2.2xlarge
 }
 
 variable "u_node_ami" {
