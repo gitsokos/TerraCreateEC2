@@ -10,8 +10,31 @@ provider "aws" {
   region = "eu-west-3"
 }
 
-########################################  master ##############################################
+module "ec2" {
+  source = "./modules/ec2"
 
+  ami = var.master_ami
+  type = var.master_type
+
+  name = "newec2" # var.master_name
+  
+  key_name = var.keyname
+
+  vpc_security_group_ids = [aws_security_group.main.id]
+
+  az = var.az
+  private_ip = var.master_ip
+
+  volume_size = "20"
+
+  install_script = "install-progs.sh"
+  install_params = {}
+  user_data_replace_on_change = var. user_data_replace_on_change_master
+}
+
+
+########################################  master ##############################################
+/*
 resource "aws_instance" "master" {
   ami           = var.master_ami
   instance_type = var.master_type
@@ -40,7 +63,7 @@ resource "aws_instance" "master" {
   user_data = templatefile("install-progs.sh",{})
   user_data_replace_on_change = var.user_data_replace_on_change_master 
 }
-
+*/
 ########################################  ubuntu nodes ########################################
 
 resource "aws_instance" "u_nodes" {
@@ -61,7 +84,7 @@ resource "aws_instance" "u_nodes" {
 #  user_data = templatefile("install-docker.sh",{})
 #  user_data_replace_on_change = var.user_data_replace_on_change_u_node # true 
 
-  depends_on = [aws_instance.master]
+###################  depends_on = [aws_instance.master]
 
 # connection {
 #   type = "ssh"
@@ -94,7 +117,7 @@ resource "aws_instance" "r_nodes" {
 #  user_data = templatefile("pe-install-node.sh",{master_private_dns=aws_instance.master.private_dns,node_os=var.r_node_name })
 #  user_data_replace_on_change = var.user_data_replace_on_change_r_node # true 
 
-  depends_on = [aws_instance.master]
+###################  depends_on = [aws_instance.master]
 
 }
 
@@ -125,7 +148,7 @@ resource "aws_instance" "w_nodes" {
 #  user_data = templatefile("pe-install-wnode.ps1",{master_private_dns=aws_instance.master.private_dns })
 #  user_data_replace_on_change = var.user_data_replace_on_change_w_node
 
-  depends_on = [aws_instance.master]
+###################  depends_on = [aws_instance.master]
 
 }
 
@@ -185,4 +208,5 @@ resource "aws_key_pair" "w_key_pair" {
   key_name = "${var.w_keyname}"  # "ec2idw_rsa"
   public_key = file("~/.ssh/ec2wid_rsa.pub")
 }
+
 

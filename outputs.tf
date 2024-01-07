@@ -24,7 +24,7 @@ output "node2_ssh_cmd" {
 }
 
 output "master_ssh_cmd" {
-  value = ["\nssh master:     ssh -o \"StrictHostKeyChecking no\" -i \"~/.ssh/ec2id_rsa\" ubuntu@${aws_instance.master.public_dns}     "]
+  value = null ############["\nssh master:     ssh -o \"StrictHostKeyChecking no\" -i \"~/.ssh/ec2id_rsa\" ubuntu@${aws_instance.master.public_dns}     "]
 }
 
 output "ssh_cmd" {
