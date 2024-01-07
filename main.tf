@@ -10,13 +10,13 @@ provider "aws" {
   region = "eu-west-3"
 }
 
-module "ec2" {
+module "master" {
   source = "./modules/ec2"
 
   ami = var.master_ami
   type = var.master_type
 
-  name = "newec2" # var.master_name
+  name = var.master_name
   
   key_name = var.keyname
 
@@ -25,7 +25,11 @@ module "ec2" {
   az = var.az
   private_ip = var.master_ip
 
-  volume_size = "20"
+  root_block_device = {
+    volume_size           = "20"
+    volume_type           = "gp2"
+    delete_on_termination = true
+  }
 
   install_script = "install-progs.sh"
   install_params = {}
@@ -84,7 +88,8 @@ resource "aws_instance" "u_nodes" {
 #  user_data = templatefile("install-docker.sh",{})
 #  user_data_replace_on_change = var.user_data_replace_on_change_u_node # true 
 
-###################  depends_on = [aws_instance.master]
+   depends_on = [module.master]
+#########  depends_on = [aws_instance.master]
 
 # connection {
 #   type = "ssh"

@@ -14,14 +14,14 @@ resource "aws_instance" "ec2instance" {
   private_ip        = var.private_ip # "172.31.13.0"
 
   root_block_device {
-    volume_size           = var.volume_size
-    volume_type           = "gp2"
-    delete_on_termination = true
+    volume_size           = var.root_block_device.volume_size
+    volume_type           = var.root_block_device.volume_type
+    delete_on_termination = var.root_block_device.delete_on_termination
   }
 
 
-#  user_data = templatefile("install-progs.sh",{})
   user_data = templatefile(var.install_script,var.install_params)
   user_data_replace_on_change = var.user_data_replace_on_change
 
 }
+

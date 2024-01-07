@@ -5,4 +5,4 @@ terraform.tfstate*
 .sec
 *.bad
 .bak1
-tmp
+.tmp
