@@ -23,11 +23,6 @@ output "node2_ssh_cmd" {
   value = null # var.nodes>2 ? "\nssh node2:  *****  ssh -i \"~/.ssh/ec2id_rsa\" ubuntu@${aws_instance.nodes[2].public_dns}  *****\n" : null
 }
 
-output "master_ssh_cmd" {
-#  value = ["\nssh master:     ssh -o \"StrictHostKeyChecking no\" -i \"~/.ssh/ec2id_rsa\" ubuntu@${aws_instance.master.public_dns}     "]
-  value = "\nssh master:     ssh -o \"StrictHostKeyChecking no\" -i \"~/.ssh/ec2id_rsa\" ubuntu@${module.master.public_dns}"
-}
-
 output "ssh_cmd" {
   value = null # "ssh -i \"~/.ssh/ec2id_rsa\" ubuntu@"
 }
@@ -38,4 +33,11 @@ output "u_nodes_ssh_cmd" {
 
 output "r_nodes_ssh_cmd" {
   value = [for node in aws_instance.r_nodes: "\nssh ${node.tags.Name}:     ssh -o \"StrictHostKeyChecking no\" -i \"~/.ssh/ec2id_rsa\" ec2-user@${node.public_dns}     "]
+}
+
+output "master_ssh_cmd" {
+#  value = ["\nssh master:     ssh -o \"StrictHostKeyChecking no\" -i \"~/.ssh/ec2id_rsa\" ubuntu@${aws_instance.master.public_dns}     "]
+  value = [for v in module.master:"\nssh -o \"StrictHostKeyChecking no\" -i \"~/.ssh/ec2id_rsa\" ubuntu@${v.public_dns}"]
+#  value = [for v in module.master: "${v.public_dns}"]
+#  value = module.master.master1 #public_ip
 }

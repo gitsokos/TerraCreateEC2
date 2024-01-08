@@ -11,7 +11,7 @@ resource "aws_instance" "ec2instance" {
   vpc_security_group_ids = var.vpc_security_group_ids
 
   availability_zone = var.az
-  private_ip        = var.private_ip # "172.31.13.0"
+  private_ip        = var.private_ip
 
   root_block_device {
     volume_size           = var.root_block_device.volume_size

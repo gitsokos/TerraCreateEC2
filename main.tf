@@ -9,31 +9,48 @@ terraform {
 provider "aws" {
   region = "eu-west-3"
 }
+/************
+variable "root_block_device" {
+  type = object(
+    {
+      volume_size           = string
+      volume_type           = string
+      delete_on_termination = bool
+    }
+  )
+  default = {
+    volume_size           = "8"
+    volume_type           = "gp2"
+    delete_on_termination = true
+  }
+}
+***************/
 
 module "master" {
   source = "./modules/ec2"
 
-  ami = var.master_ami
-  type = var.master_type
+  for_each = var.configs
 
-  name = var.master_name
-  
-  key_name = var.keyname
+  ami                         = each.value.ami
+  type                        = each.value.type
+  name                        = each.value.name
+  key_name                    = each.value.key_name
+  az                          = each.value.az
+  install_script              = each.value.install_script
+  install_params              = each.value.install_params
+  user_data_replace_on_change = each.value.user_data_replace_on_change
+  private_ip                  = each.value.private_ip
+
 
   vpc_security_group_ids = [aws_security_group.main.id]
 
-  az = var.az
-  private_ip = var.master_ip
+  root_block_device           = each.value.root_block_device
+#{
+#    volume_size           = var.root_block_device.volume_size # "20"
+#    volume_type           = var.root_block_device.volume_type # "gp2"
+#    delete_on_termination = var.root_block_device.delete_on_termination #  true
+#  }
 
-  root_block_device = {
-    volume_size           = "20"
-    volume_type           = "gp2"
-    delete_on_termination = true
-  }
-
-  install_script = "install-progs.sh"
-  install_params = {}
-  user_data_replace_on_change = var. user_data_replace_on_change_master
 }
 
 

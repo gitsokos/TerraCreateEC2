@@ -18,11 +18,11 @@ variable "root_block_device" {
       delete_on_termination = bool
     }
   )
-  default = {
-    volume_size           = "20"
-    volume_type           = "gp2"
-    delete_on_termination = true
-  }
+#  default = {
+#    volume_size           = "8"
+#    volume_type           = "gp2"
+#    delete_on_termination = true
+#  }
 }
 
 

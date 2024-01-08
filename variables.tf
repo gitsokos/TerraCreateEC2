@@ -18,6 +18,30 @@ variable "u_node_name" {}
 variable "r_node_name" {}
 variable "w_node_name" {}
 
+variable "configs" {
+  type = map ( object (
+    {
+      ami                         = string
+      type                        = string
+      private_ip                  = string
+      name                        = string
+      key_name                    = string
+      az                          = string
+      install_script              = string
+      install_params              = any
+      user_data_replace_on_change = bool
+
+      root_block_device = object (
+        {
+          volume_size           = string
+          volume_type           = string
+          delete_on_termination = bool
+        }
+      )
+    }
+  ))
+}
+
 variable "master_ami" {
   type    = string
 #  default = "ami-01d21b7be69801c2f" # ubuntu 22.04 i4i.large t2.small

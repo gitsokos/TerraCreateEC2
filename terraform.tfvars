@@ -1,6 +1,6 @@
 az = "eu-west-3a"
 
-u_nodes = 1
+u_nodes = 0
 r_nodes = 0
 w_nodes = 0
 user_data_replace_on_change_master = true # false
@@ -39,4 +39,41 @@ w_node_type = "t2.small"
 keyname = "ec2id_rsa"
 
 w_keyname = "ec2wid_rsa"
+
+
+configs = {
+  master1 = {
+    ami                         = "ami-01d21b7be69801c2f"
+    type                        = "t2.medium"
+    private_ip                  = "172.31.13.1"
+    name                        = "master1"
+    key_name                    = "ec2id_rsa"
+    az                          = "eu-west-3a"
+    install_script              = "install-progs.sh"
+    install_params              = {}
+    user_data_replace_on_change = true
+    root_block_device  = {
+      volume_size               = "16"
+      volume_type               = "gp2"
+      delete_on_termination     = true
+    }
+  },
+  master2 = {
+    ami                         = "ami-01d21b7be69801c2f"
+    type                        = "t2.small"
+    private_ip                  = "172.31.13.2"
+    name                        = "master2"
+    key_name                    = "ec2id_rsa"
+    az                          = "eu-west-3a"
+    install_script              = "install-progs.sh"
+    install_params              = {}
+    user_data_replace_on_change = true
+    root_block_device  = {
+      volume_size               = "20"
+      volume_type               = "gp2"
+      delete_on_termination     = true
+    }
+  },
+}
+
 
