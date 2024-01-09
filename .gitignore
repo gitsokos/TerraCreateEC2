@@ -6,3 +6,4 @@ terraform.tfstate*
 *.bad
 .bak1
 .tmp
+*.ini

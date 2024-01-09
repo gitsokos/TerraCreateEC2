@@ -9,27 +9,13 @@ terraform {
 provider "aws" {
   region = "eu-west-3"
 }
-/************
-variable "root_block_device" {
-  type = object(
-    {
-      volume_size           = string
-      volume_type           = string
-      delete_on_termination = bool
-    }
-  )
-  default = {
-    volume_size           = "8"
-    volume_type           = "gp2"
-    delete_on_termination = true
-  }
-}
-***************/
+
+####################################### master ###############################################
 
 module "master" {
   source = "./modules/ec2"
 
-  for_each = var.configs
+  for_each = var.master
 
   ami                         = each.value.ami
   type                        = each.value.type
@@ -40,152 +26,81 @@ module "master" {
   install_params              = each.value.install_params
   user_data_replace_on_change = each.value.user_data_replace_on_change
   private_ip                  = each.value.private_ip
-
-
-  vpc_security_group_ids = [aws_security_group.main.id]
-
   root_block_device           = each.value.root_block_device
-#{
-#    volume_size           = var.root_block_device.volume_size # "20"
-#    volume_type           = var.root_block_device.volume_type # "gp2"
-#    delete_on_termination = var.root_block_device.delete_on_termination #  true
-#  }
 
+  vpc_security_group_ids      = [aws_security_group.main.id]
 }
 
-
-########################################  master ##############################################
-/*
-resource "aws_instance" "master" {
-  ami           = var.master_ami
-  instance_type = var.master_type
-
-  tags = {
-    Name = "${var.master_name}"
-  }
-  
-  key_name = var.keyname
-
-  vpc_security_group_ids = [aws_security_group.main.id]
-
-  availability_zone = var.az
-  private_ip        = var.master_ip # "172.31.13.0"
-
-  root_block_device {
-    volume_size           = "20"
-    volume_type           = "gp2"
-    delete_on_termination = true
-  }
-
-#  provisioner "local-exec" {
-#    command = "echo \"The server's IP address is ${self.private_ip}\""
-#  }
-
-  user_data = templatefile("install-progs.sh",{})
-  user_data_replace_on_change = var.user_data_replace_on_change_master 
-}
-*/
 ########################################  ubuntu nodes ########################################
 
-resource "aws_instance" "u_nodes" {
-  ami           = var.u_node_ami
-  instance_type = var.node_type
-  count         = var.u_nodes
-  tags = {
-    Name = "${var.u_node_name}-${count.index+1}"
-  }
+module "unodes" {
+  source = "./modules/ec2"
 
-  availability_zone = var.az
-  private_ip        = "${var.u_node_ip_prefix}${count.index+1}"
+  for_each = var.unodes
 
-  key_name = var.keyname
+  ami                         = each.value.ami
+  type                        = each.value.type
+  name                        = each.value.name
+  key_name                    = each.value.key_name
+  az                          = each.value.az
+  install_script              = each.value.install_script
+  install_params              = each.value.install_params
+  user_data_replace_on_change = each.value.user_data_replace_on_change
+  private_ip                  = each.value.private_ip
+  root_block_device           = each.value.root_block_device
 
-  vpc_security_group_ids = [aws_security_group.main.id]
+  vpc_security_group_ids      = [aws_security_group.main.id]
 
-#  user_data = templatefile("install-docker.sh",{})
-#  user_data_replace_on_change = var.user_data_replace_on_change_u_node # true 
-
-   depends_on = [module.master]
-#########  depends_on = [aws_instance.master]
-
-# connection {
-#   type = "ssh"
-#   host = self.public_ip
-#   private_key = "/home/grtso/.ssh/ec2id_rsa"
-# }
-# provisioner "file" {
-#   source      = "/home/grtso/.ssh/ec2id_rsa"
-#   destination = "/root/.ssh/ec2id_rsa"
-# }
+  depends_on = [module.master]
 }
 
 ########################################  redhat nodes ########################################
 
-resource "aws_instance" "r_nodes" {
-  ami           = var.r_node_ami
-  instance_type = var.node_type
-  count         = var.r_nodes
-  tags = {
-    Name = "${var.r_node_name}-${count.index+1}"
-  }
+module "rnodes" {
+  source = "./modules/ec2"
 
-  key_name = var.keyname
+  for_each = var.rnodes
 
-  vpc_security_group_ids = [aws_security_group.main.id]
+  ami                         = each.value.ami
+  type                        = each.value.type
+  name                        = each.value.name
+  key_name                    = each.value.key_name
+  az                          = each.value.az
+  install_script              = each.value.install_script
+  install_params              = each.value.install_params
+  user_data_replace_on_change = each.value.user_data_replace_on_change
+  private_ip                  = each.value.private_ip
+  root_block_device           = each.value.root_block_device
 
-  availability_zone = var.az
-  private_ip        = "${var.r_node_ip_prefix}${count.index+1}"
+  vpc_security_group_ids      = [aws_security_group.main.id]
 
-#  user_data = templatefile("pe-install-node.sh",{master_private_dns=aws_instance.master.private_dns,node_os=var.r_node_name })
-#  user_data_replace_on_change = var.user_data_replace_on_change_r_node # true 
-
-###################  depends_on = [aws_instance.master]
-
+  depends_on = [module.master]
 }
 
 ########################################  window nodes ########################################
 
-resource "aws_instance" "w_nodes" {
-  
-  ami           = var.w_node_ami
-  instance_type = var.w_node_type
-  count         = var.w_nodes
-  tags = {
-    Name = "${var.w_node_name}-${count.index+1}"
-  }
+module "wnodes" {
+  source = "./modules/ec2"
 
-  associate_public_ip_address = true
+  for_each = var.wnodes
 
-  key_name = var.w_keyname
+  ami                         = each.value.ami
+  type                        = each.value.type
+  name                        = each.value.name
+  key_name                    = each.value.key_name
+  az                          = each.value.az
+  install_script              = each.value.install_script
+  install_params              = each.value.install_params
+  user_data_replace_on_change = each.value.user_data_replace_on_change
+  private_ip                  = each.value.private_ip
+  root_block_device           = each.value.root_block_device
 
-  vpc_security_group_ids = [aws_security_group.main.id]
+  vpc_security_group_ids      = [aws_security_group.main.id]
 
-  availability_zone = var.az
-  private_ip        = "${var.w_node_ip_prefix}${count.index+1}"
-
-#  key_name = "winkey"
-#  vpc_security_group_ids = ["sg-23847238474f"]
-#  subnet_id     = "subnet-2348273423"
-
-#  user_data = templatefile("pe-install-wnode.ps1",{master_private_dns=aws_instance.master.private_dns })
-#  user_data_replace_on_change = var.user_data_replace_on_change_w_node
-
-###################  depends_on = [aws_instance.master]
-
+  depends_on = [module.master]
 }
 
 ###############################################################################################
-
-#resource "local_file" "inventory" {
-#  filename = var.inventory
-#  file_permission = "0664"
-#  content = <<-EOT
-#    [nodes]
-#    %{ for ip in aws_instance.nodes.*.public_ip ~}
-#    ${ip}
-#    %{ endfor ~}
-#  EOT
-#}
 
 resource "aws_security_group" "main" {
   name = "terraform-sg"
@@ -230,5 +145,4 @@ resource "aws_key_pair" "w_key_pair" {
   key_name = "${var.w_keyname}"  # "ec2idw_rsa"
   public_key = file("~/.ssh/ec2wid_rsa.pub")
 }
-
 

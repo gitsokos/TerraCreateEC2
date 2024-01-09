@@ -18,13 +18,7 @@ variable "root_block_device" {
       delete_on_termination = bool
     }
   )
-#  default = {
-#    volume_size           = "8"
-#    volume_type           = "gp2"
-#    delete_on_termination = true
-#  }
 }
-
 
 variable "install_script" {}
 variable "install_params" {}
