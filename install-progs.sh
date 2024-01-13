@@ -46,9 +46,18 @@ sudo apt-get -yqq install tree
 echo "------------------------------------------- Install xrdp ---------------------------------------------------------------"
 sudo apt-get -yqq install xrdp
 sudo systemctl enable xrdp
-echo "------------------------------------------- Install gnome --------------------------------------------------------------"
-sudo add-apt-repository --yes ppa:gnome3-team/gnome3
-sudo apt-get -yqq install gnome-shell ubuntu-gnome-desktop
+echo "------------------------------------------- Install xfce ---------------------------------------------------------------"
+sudo apt-get -yqq install xfce4
+sudo apt-get -yqq install xfce4-terminal tango-icon-theme
+sudo echo xfce4-session > ~/.xsession
+sudo service xrdp restart
+echo "------------------------------------------- Install google chrome ------------------------------------------------------"
+sudo wget -nv https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo chmod 0666 google-chrome-stable_current_amd64.deb
+sudo apt-get -yqq  install ./google-chrome-stable_current_amd64.deb || true
+#echo "------------------------------------------- Install gnome --------------------------------------------------------------"
+#sudo add-apt-repository --yes ppa:gnome3-team/gnome3
+#sudo apt-get -yqq install gnome-shell ubuntu-gnome-desktop
 
 echo "------------------------------------------- Set passwd for ubuntu ------------------------------------------------------"
 echo ubuntu:ubup@ss0 | sudo chpasswd
