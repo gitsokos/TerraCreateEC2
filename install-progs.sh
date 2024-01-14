@@ -103,3 +103,8 @@ echo AZ_DIST-$AZ_DIST
 
 sudo apt-get -yqq update
 sudo apt-get -yqq install azure-cli
+
+echo "-------------------------------------------- Install k9s ---------------------------------------------------------------"
+cd /tmp
+wget -nv https://github.com/derailed/k9s/releases/download/v0.31.5/k9s_Linux_amd64.tar.gz
+sudo tar -C /usr/bin -xzf k9s_Linux_amd64.tar.gz
