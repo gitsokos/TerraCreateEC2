@@ -3,7 +3,8 @@ echo -e "----------------------------------------- Script directory ------------
 
 echo '#!/bin/bash' > /tmp/keepalive
 echo "trap 'echo; exit 0;' INT" >> /tmp/keepalive
-echo 'while :; do for x in {1..50}; do printf "\033[1C"; sleep 2; done; for x in {1..50}; do printf "\033[1D"; sleep 2; done done' >> /tmp/keepalive
+echo 'while :; do  sleep 1; printf "\x0d"; now=`date +"%T"`; echo -n $now; done' >> /tmp/keepalive
+#echo 'while :; do for x in {1..50}; do printf "\033[1C"; sleep 2; done; for x in {1..50}; do printf "\033[1D"; sleep 2; done done' >> /tmp/keepalive
 
 chmod 0777 /tmp/keepalive
 sudo cp /tmp/keepalive /usr/bin
@@ -108,3 +109,13 @@ echo "-------------------------------------------- Install k9s -----------------
 cd /tmp
 wget -nv https://github.com/derailed/k9s/releases/download/v0.31.5/k9s_Linux_amd64.tar.gz
 sudo tar -C /usr/bin -xzf k9s_Linux_amd64.tar.gz
+
+echo "-------------------------------------------- Cluster template ----------------------------------------------------------"
+echo "kind: Cluster" >> /tmp/cluster-template.yaml
+echo "apiVersion: kind.x-k8s.io/v1alpha4" >> /tmp/cluster-template.yaml
+echo "nodes:" >> /tmp/cluster-template.yaml
+echo "- role: control-plane" >> /tmp/cluster-template.yaml
+echo "- role: worker" >> /tmp/cluster-template.yaml
+echo "- role: worker" >> /tmp/cluster-template.yaml
+echo "- role: worker" >> /tmp/cluster-template.yaml
+
