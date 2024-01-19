@@ -105,6 +105,14 @@ echo AZ_DIST-$AZ_DIST
 sudo apt-get -yqq update
 sudo apt-get -yqq install azure-cli
 
+echo "-------------------------------------------- Install vscode ------------------------------------------------------------"
+sudo apt-get -yqq update
+sudo apt-get -yqq install software-properties-common apt-transport-https wget
+wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+sudo apt-get -yqq update
+sudo apt-get -yqq install code
+
 echo "-------------------------------------------- Install k9s ---------------------------------------------------------------"
 cd /tmp
 wget -nv https://github.com/derailed/k9s/releases/download/v0.31.5/k9s_Linux_amd64.tar.gz
