@@ -118,6 +118,13 @@ cd /tmp
 wget -nv https://github.com/derailed/k9s/releases/download/v0.31.5/k9s_Linux_amd64.tar.gz
 sudo tar -C /usr/bin -xzf k9s_Linux_amd64.tar.gz
 
+echo "-------------------------------------------- kubectl autocomplete ------------------------------------------------------"
+echo 'source <(kubectl completion bash)' >>/root/.bashrc
+echo 'source <(kubectl completion bash)' >>/home/ubuntu/.bashrc
+
+echo "-------------------------------------------- add ubuntu to docker group ------------------------------------------------"
+sudo usermod -a -G docker ubuntu
+
 echo "-------------------------------------------- Cluster template ----------------------------------------------------------"
 echo "kind: Cluster" >> /tmp/cluster-template.yaml
 echo "apiVersion: kind.x-k8s.io/v1alpha4" >> /tmp/cluster-template.yaml
