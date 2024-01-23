@@ -126,11 +126,16 @@ echo "-------------------------------------------- add ubuntu to docker group --
 sudo usermod -a -G docker ubuntu
 
 echo "-------------------------------------------- Cluster template ----------------------------------------------------------"
-echo "kind: Cluster" >> /tmp/cluster-template.yaml
+echo "kind: Cluster"                      >> /tmp/cluster-template.yaml
 echo "apiVersion: kind.x-k8s.io/v1alpha4" >> /tmp/cluster-template.yaml
-echo "nodes:" >> /tmp/cluster-template.yaml
-echo "- role: control-plane" >> /tmp/cluster-template.yaml
-echo "- role: worker" >> /tmp/cluster-template.yaml
-echo "- role: worker" >> /tmp/cluster-template.yaml
-echo "- role: worker" >> /tmp/cluster-template.yaml
+echo "nodes:"                             >> /tmp/cluster-template.yaml
+echo "- role: control-plane"              >> /tmp/cluster-template.yaml
+echo "  extraPortMappings:"               >> /tmp/cluster-template.yaml
+echo "  - containerPort: 30100"           >> /tmp/cluster-template.yaml # The port that NodePort service listens to
+echo "    hostPort: 30070"                >> /tmp/cluster-template.yaml # localhost:30070 to connect to the service
+# https://medium.com/@talhakhalid101/creating-a-kubernetes-cluster-for-development-with-kind-189df2cb0792
+# https://www.youtube.com/watch?v=s_o8dwzRlu4&t=2483s
+echo "- role: worker"                     >> /tmp/cluster-template.yaml
+echo "- role: worker"                     >> /tmp/cluster-template.yaml
+echo "- role: worker"                     >> /tmp/cluster-template.yaml
 
