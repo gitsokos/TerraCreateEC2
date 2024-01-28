@@ -1,0 +1,15 @@
+---
+- name: Install tools and apps
+  become: True
+  hosts: all
+  tasks:
+  - name: Basic tools
+    include_tasks: basic.yaml
+  - name: Remote Desctop GUI
+    include_tasks: remotegui.yaml
+
+  handlers:
+  - name: Restart xrdp
+    systemd:
+      name: xrdp
+      state: restarted

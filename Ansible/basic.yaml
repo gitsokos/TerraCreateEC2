@@ -1,0 +1,10 @@
+- name: Template keepalive to /usr/bin
+  ansible.builtin.template:
+    src: ./files/keepalive
+    dest: /usr/bin
+    mode: 0777
+- name: Install tree
+  apt:
+    name: tree
+    state: present
+    update_cache: true

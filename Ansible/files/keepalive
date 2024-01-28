@@ -1,0 +1,4 @@
+#!/bin/bash
+trap 'echo; exit 0;' INT
+while :; do  sleep 1; printf "\x0d"; now=`date +"%T"`; echo -n $now; done
+

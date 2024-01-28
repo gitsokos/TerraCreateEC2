@@ -6,7 +6,7 @@ resource "local_file" "inventory" {
     %{~if length(module.master)>0 ~}
       [master]
       %{~for v in module.master ~}
-      ${v.public_ip}
+      ${v.public_ip}	ansible_connection=ssh  ansible_user=ubuntu     ansible_ssh_private_key_file=~/.ssh/ec2id_rsa
       %{~endfor ~}
     %{~endif ~}
 

@@ -1,0 +1,29 @@
+- name: Install xrdp
+  package:
+    name: xrdp
+    state: present
+
+- name: Configure xfce4
+  lineinfile:
+    path: /home/ubuntu/.xsession
+    line: xfce4-session
+    create: yes
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
+
+- name: Install xfce4
+  package:
+    name:
+    - xfce4
+    - xfce4-terminal
+    - tango-icon-theme
+    state: present
+  notify: Restart xrdp
+
+- name: Set ubuntu password
+  user:
+    name: ubuntu
+    password: $6$mysecretsalt$WB/2ffrZNRWaS.kVbuUkWEoh4unIwsD81TrNW6ydKKO4XeFV3gG1HVEiqCt35r6V4WXzFu9thr/kVwqRY5tbW/
+    update_password: always
+
