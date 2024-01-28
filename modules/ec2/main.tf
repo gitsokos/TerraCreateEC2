@@ -20,7 +20,7 @@ resource "aws_instance" "ec2instance" {
   }
 
 
-  user_data = templatefile(var.install_script,var.install_params)
+  user_data = var.install_script==""?"":templatefile(var.install_script,var.install_params)
   user_data_replace_on_change = var.user_data_replace_on_change
 
 }
