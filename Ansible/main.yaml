@@ -7,6 +7,8 @@
     include_tasks: basic.yaml
   - name: Remote Desctop GUI
     include_tasks: remotegui.yaml
+  - name: Chrome
+    include_tasks: chrome.yaml
 
   handlers:
   - name: Restart xrdp

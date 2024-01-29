@@ -1,3 +1,4 @@
+inventory = "./Ansible/inventory.ini"
 
 keyname = "ec2id_rsa"
 

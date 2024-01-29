@@ -1,6 +1,6 @@
 
 resource "local_file" "inventory" {
-  filename = "inventory.ini"
+  filename = var.inventory
   file_permission = "0664"
   content = <<EOT
     %{~if length(module.master)>0 ~}
