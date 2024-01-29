@@ -1,0 +1,7 @@
+- name: Install git
+  package:
+    name: git-all
+    state: latest
+
+- name: Configure git
+  command: git config --system credential.helper store

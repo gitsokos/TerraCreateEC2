@@ -1,17 +1,10 @@
-#    - name: Install apt-transport-https
-#      ansible.builtin.apt:
-#        state: latest
-#        update_cache: true
-
     - name: "VSCode: Add Apt signing key"
       ansible.builtin.apt_key:
-#        url: "https://dl.google.com/linux/linux_signing_key.pub"
         url: "https://packages.microsoft.com/keys/microsoft.asc"
         state: present
 
     - name: "VSCode: Add repository into sources list"
       ansible.builtin.apt_repository:
-#        repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
         repo: deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main
         state: present
         filename: vscode
@@ -21,10 +14,4 @@
         name: "code"
         state: latest
         update_cache: true
-
-# sudo apt-get -yqq install software-properties-common apt-transport-https wget
-# wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
-# sudo add-apt-repository "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
-# sudo apt-get -yqq update
-# sudo apt-get -yqq install code
 

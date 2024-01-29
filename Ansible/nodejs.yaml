@@ -1,0 +1,21 @@
+- name: "Nodejs: remove gpg file"
+  file:
+    name: /etc/apt/keyrings/nodesource.gpg
+    state: absent
+
+- name: "Nodejs: gpgkey"
+  shell: "curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg"
+
+- name: "Nodejs: Add NodeSource repository"
+  apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main"
+    state: present
+    update_cache: yes
+    filename: nodesource
+
+- name: Install Node.js
+  apt:
+    name: nodejs
+    state: present
+    update-cache: true
+

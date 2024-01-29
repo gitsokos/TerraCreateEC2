@@ -1,10 +1,29 @@
-- name: Template keepalive to /usr/bin
+- name: "Basic: Template keepalive to /usr/bin"
   ansible.builtin.template:
     src: ./files/keepalive
     dest: /usr/bin
     mode: 0777
-- name: Install tree
+
+- name: "Basic: apt-get update"
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: "Basic: Install tree"
   apt:
     name: tree
     state: present
-    update_cache: true
+
+- name: "Basic: Install build-essential"
+  apt:
+    name: build-essential
+    state: present
+
+- name: "Basic: Install net-tools"
+  apt:
+    name: net-tools
+
+- name: "Basic: Install ca-certificates"
+  package:
+    name: ca-certificates
+    state: present
+
