@@ -1,0 +1,23 @@
+#export PATH=$PATH:/usr/local/go/bin
+#echo PATH=$PATH >> ~/.bashrc
+#source ~/.bashrc
+
+- name: "Golang: Remove older installation"
+  ansible.builtin.file:
+    path: /usr/bin/go
+    state: absent
+
+- name: "Golang: Unarchive"
+  ansible.builtin.unarchive:
+    src: https://go.dev/dl/go1.21.5.linux-amd64.tar.gz
+    dest: /usr/local
+    remote_src: yes
+
+- name: "Golang: set PATH"
+  ansible.builtin.replace:
+    path: /home/ubuntu/environment
+#    regexp: '^PATH="\([^"]*\)"'
+    regexp: '^\(.*\)'
+    replace: '\0'
+#    replace: 'PATH="\1:xxxx'
+
