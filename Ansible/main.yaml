@@ -9,6 +9,8 @@
     include_tasks: remotegui.yaml
   - name: Chrome
     include_tasks: chrome.yaml
+  - name: VSCode
+    include_tasks: vscode.yaml
 
   handlers:
   - name: Restart xrdp
