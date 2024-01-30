@@ -15,9 +15,7 @@
 
 - name: "Golang: set PATH"
   ansible.builtin.replace:
-    path: /home/ubuntu/environment
-#    regexp: '^PATH="\([^"]*\)"'
-    regexp: '^\(.*\)'
-    replace: '\0'
-#    replace: 'PATH="\1:xxxx'
+    path: /etc/environment
+    regexp: '^PATH=\"(.*)'
+    replace: 'PATH="/usr/local/go/bin:\1'
 
