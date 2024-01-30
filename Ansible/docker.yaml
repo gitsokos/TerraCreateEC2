@@ -33,3 +33,8 @@
     state: present
     update-cache: true
 
+- name: "Docker: add ubuntu to group docker"
+  user:
+    name: ubuntu
+    groups: docker
+    append: true
