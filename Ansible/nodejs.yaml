@@ -10,10 +10,10 @@
   apt_repository:
     repo: "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main"
     state: present
-    update_cache: yes
+    update_cache: true
     filename: nodesource
 
-- name: Install Node.js
+- name: "Nodejs: Install"
   apt:
     name: nodejs
     state: present

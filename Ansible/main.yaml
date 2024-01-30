@@ -7,6 +7,8 @@
     include_tasks: basic.yaml
   - name: golang
     include_tasks: golang.yaml
+  - name: Docker
+    include_tasks: docker.yaml
   - name: Remote Desctop GUI
     include_tasks: remotegui.yaml
   - name: Chrome

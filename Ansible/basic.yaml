@@ -7,6 +7,7 @@
 - name: "Basic: apt-get update"
   ansible.builtin.apt:
     update_cache: yes
+  changed_when: False
 
 - name: "Basic: Install tree"
   apt:

@@ -1,0 +1,35 @@
+#curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --yes --dearmor -o /etc/apt/keyrings/docker.gpg
+#sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+#echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+#sudo apt-get -yqq update
+
+#sudo apt-get -yqq install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+- name: "Docker: remove gpg file"
+  file:
+    name: /etc/apt/keyrings/docker.gpg
+    state: absent
+
+- name: "Docker: gpgkey"
+  shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
+
+- name: "Docker: Add docker repository"
+  apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
+#   facts: {{ ansible_lsb.codename }} = $(. /etc/os-release && echo "$VERSION_CODENAME")
+    state: present
+    update_cache: true
+    filename: docker
+
+- name: "Docker: Install"
+  apt:
+    pkg:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-buildx-plugin
+    - docker-compose-plugin
+    state: present
+    update-cache: true
+
