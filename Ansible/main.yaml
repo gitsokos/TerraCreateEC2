@@ -3,12 +3,14 @@
   become: True
   hosts: all
   tasks:
-  - name: Terraform
-    include_tasks: terraform.yaml
+  - name: Kind
+    include_tasks: kind.yaml
   - name: Basic tools
     include_tasks: basic.yaml
   - name: golang
     include_tasks: golang.yaml
+  - name: Terraform
+    include_tasks: terraform.yaml
   - name: Docker
     include_tasks: docker.yaml
   - name: Remote Desctop GUI

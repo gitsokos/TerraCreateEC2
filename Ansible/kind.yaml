@@ -1,0 +1,5 @@
+- name: "Kind: Install"
+  ansible.builtin.get_url:
+    url: https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+    dest: /usr/local/bin/kind
+    mode: '0755'
