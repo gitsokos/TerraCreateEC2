@@ -1,0 +1,21 @@
+- name: "Terraform: remove gpg file"
+  file:
+    name: /etc/apt/keyrings/hashicorp-archive-keyring.gpg
+    state: absent
+
+- name: "Terraform: gpgkey"
+  shell: "curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --yes --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg"
+
+- name: "Terraform: Add NodeSource repository"
+  apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_lsb.codename }} main"
+    state: present
+    update_cache: true
+    filename: hashicorp
+
+- name: "Terraform: Install"
+  apt:
+    name: terraform
+    state: present
+    update-cache: true
+

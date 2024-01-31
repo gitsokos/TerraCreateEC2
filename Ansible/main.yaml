@@ -3,6 +3,8 @@
   become: True
   hosts: all
   tasks:
+  - name: Terraform
+    include_tasks: terraform.yaml
   - name: Basic tools
     include_tasks: basic.yaml
   - name: golang
