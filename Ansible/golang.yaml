@@ -9,16 +9,26 @@
     dest: /usr/local
     remote_src: yes
 
+#- name: "Golang: Test PATH"
+#  shell: "grep -c /usr/local/go/bin /etc/environment"
+#  ignore_errors: yes
+#  changed_when: False
+#  register: fnd
+
 - name: "Golang: Test PATH"
-  shell: "grep -c /usr/local/go/bin /etc/environment"
-  ignore_errors: yes
-  changed_when: False
+  lineinfile:
+    path: /etc/environment
+    regexp: /usr/local/go/bin
+    line: "dummy-needless"
   register: found
+  check_mode: yes
+  changed_when: False
 
 - name: "Golang: set PATH"
   ansible.builtin.replace:
     path: /etc/environment
     regexp: '^PATH=\"(.*)'
     replace: 'PATH="/usr/local/go/bin:\1'
-  when: found.stdout == "0"
+  when: found.msg == "line added" # "line added" means that /usr/local/go/bin is not in PATH.
+#  when: fnd.stdout == "0"
 
