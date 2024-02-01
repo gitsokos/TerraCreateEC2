@@ -23,6 +23,8 @@
     include_tasks: kind.yaml
   - name: Kubernetes
     include_tasks: kubernetes.yaml
+  - name: k9s
+    include_tasks: k9s.yaml
   - name: nodejs
     include_tasks: nodejs.yaml
 

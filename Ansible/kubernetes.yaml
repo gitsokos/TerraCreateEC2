@@ -21,3 +21,15 @@
     state: present
     update-cache: true
 
+- name: "Kubernetes: kubectl auto complete (root)"
+  lineinfile:
+    path: /root/.bashrc
+    line: "source <(kubectl completion bash)"
+    create: yes
+
+- name: "Kubernetes: kubectl auto complete (ubuntu)"
+  lineinfile:
+    path: /home/ubuntu/.bashrc
+    line: "source <(kubectl completion bash)"
+    create: yes
+

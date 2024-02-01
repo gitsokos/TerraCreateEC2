@@ -1,0 +1,6 @@
+- name: "k9s: Unarchive"
+  ansible.builtin.unarchive:
+    src: https://github.com/derailed/k9s/releases/download/v0.31.5/k9s_Linux_amd64.tar.gz
+    dest: /usr/bin
+    remote_src: yes
+
