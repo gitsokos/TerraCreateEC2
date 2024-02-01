@@ -1,0 +1,35 @@
+- name: "Azure-cli: remove gpg file"
+  file:
+    name: /etc/apt/keyrings/microsoft.gpg
+    state: absent
+
+- name: "Azure-cli: gpgkey"
+  shell: "curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /etc/apt/keyrings/microsoft.gpg"
+
+- name: "Azure-cli: Add repository"
+  apt_repository:
+    repo: "deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ {{ ansible_lsb.codename }} main"
+    state: present
+    update_cache: true
+    filename: azure-cli
+
+- name: "Azure-cli: Install"
+  apt:
+    name: azure-cli
+    state: present
+    update-cache: true
+
+
+#echo "-------------------------------------------- Install azure-cli ---------------------------------------------------------"
+#sudo apt-get -yqq update
+#sudo apt-get -yqq install ca-certificates curl apt-transport-https lsb-release gnupg
+#sudo mkdir -p /etc/apt/keyrings
+#curl -sLS https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor |    sudo tee /etc/apt/keyrings/microsoft.gpg > /dev/null
+#sudo chmod go+r /etc/apt/keyrings/microsoft.gpg
+#AZ_DIST=$(lsb_release -cs)
+#echo "deb [arch=`dpkg --print-architecture` signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ $AZ_DIST main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
+#echo AZ_DIST-$AZ_DIST
+
+#sudo apt-get -yqq update
+#sudo apt-get -yqq install azure-cli
+

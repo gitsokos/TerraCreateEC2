@@ -3,6 +3,8 @@
   become: True
   hosts: all
   tasks:
+  - name: azure cli
+    include_tasks: azurecli.yaml
   - name: Basic tools
     include_tasks: basic.yaml
   - name: golang
