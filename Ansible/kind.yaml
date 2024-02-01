@@ -3,3 +3,10 @@
     url: https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
     dest: /usr/local/bin/kind
     mode: '0755'
+
+- name: "Kind: cluster1x3.yaml to /tmp "
+  ansible.builtin.template:
+    src: ./files/cluster1x3.yaml
+    dest: /tmp
+    mode: 0666
+

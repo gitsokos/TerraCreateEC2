@@ -1,0 +1,23 @@
+- name: "Kubernetes: remove gpg file"
+  file:
+    name: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    state: absent
+
+- name: "Kubernetes: gpgkey"
+# latest version as of 20240201: v1.29 incombatible with kind node image v.1.27
+  shell: "curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.27/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg"
+
+- name: "Kubernetes: Add kubernetes repository"
+  apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.27/deb/ /"
+    state: present
+    update_cache: true
+    filename: kubernetes
+
+- name: "Kubernetes: Install"
+  apt:
+    pkg:
+    - kubectl
+    state: present
+    update-cache: true
+

@@ -21,9 +21,18 @@
     state: present
   notify: Restart xrdp
 
+- name: Flush handlers
+  meta: flush_handlers
+
 - name: Set ubuntu password
   user:
     name: ubuntu
     password: $6$mysecretsalt$WB/2ffrZNRWaS.kVbuUkWEoh4unIwsD81TrNW6ydKKO4XeFV3gG1HVEiqCt35r6V4WXzFu9thr/kVwqRY5tbW/
     update_password: always
+
+#handlers:
+#- name: Restart xrdp
+#  systemd:
+#    name: xrdp
+#    state: restarted
 

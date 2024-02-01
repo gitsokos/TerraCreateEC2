@@ -3,26 +3,28 @@
   become: True
   hosts: all
   tasks:
-  - name: Kind
-    include_tasks: kind.yaml
   - name: Basic tools
     include_tasks: basic.yaml
   - name: golang
     include_tasks: golang.yaml
-  - name: Terraform
-    include_tasks: terraform.yaml
-  - name: Docker
-    include_tasks: docker.yaml
   - name: Remote Desctop GUI
     include_tasks: remotegui.yaml
   - name: Chrome
     include_tasks: chrome.yaml
   - name: VSCode
     include_tasks: vscode.yaml
-  - name: nodejs
-    include_tasks: nodejs.yaml
   - name: git
     include_tasks: git.yaml
+  - name: Terraform
+    include_tasks: terraform.yaml
+  - name: Docker
+    include_tasks: docker.yaml
+  - name: Kind
+    include_tasks: kind.yaml
+  - name: Kubernetes
+    include_tasks: kubernetes.yaml
+  - name: nodejs
+    include_tasks: nodejs.yaml
 
   handlers:
   - name: Restart xrdp
