@@ -4,7 +4,7 @@ nodes:
 - role: control-plane
 #  image: kindest/node:v1.18
   extraPortMappings:
-  - containerPort: 30100
+  - containerPort: 30100 # actually "cluster port"
     hostPort: 30070 # localhost:30070 to connect to the service
                     # https://medium.com/@talhakhalid101/creating-a-kubernetes-cluster-for-development-with-kind-189df2cb0792
                     # https://www.youtube.com/watch?v=s_o8dwzRlu4&t=2483s
