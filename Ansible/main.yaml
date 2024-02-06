@@ -31,6 +31,8 @@
     include_tasks: nodejs.yaml
   - name: azure cli
     include_tasks: azurecli.yaml
+  - name: Kafka 
+    include_tasks: kafka.yaml
 
   handlers:
   - name: Restart xrdp
