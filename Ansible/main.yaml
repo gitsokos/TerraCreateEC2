@@ -5,6 +5,8 @@
   tasks:
   - name: Basic tools
     include_tasks: basic.yaml
+  - name: Java
+    include_tasks: java.yaml
   - name: golang
     include_tasks: golang.yaml
   - name: Remote Desctop GUI

@@ -1,0 +1,6 @@
+- name: "Java: Install"
+  apt:
+    name: default-jre
+    state: present
+    update-cache: true
+
