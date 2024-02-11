@@ -24,3 +24,8 @@
   ansible.builtin.lineinfile:
     path: /etc/environment
     line: KAFKAPATH="/usr/local/kafka_2.13-3.6.1"
+
+- name: "Kafka: Set CONFIG PATH"
+  ansible.builtin.lineinfile:
+    path: /etc/environment
+    line: KCF="/usr/local/kafka_2.13-3.6.1/config"
